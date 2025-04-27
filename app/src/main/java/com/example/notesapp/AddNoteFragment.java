@@ -33,7 +33,7 @@ public class AddNoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_note, container, false);
 
         // Inisialisasi komponen
-        noteEditText = view.findViewById(R.id.note_edit_text);
+        noteEditText = view.findViewById(R.id.title_edit_text);
         doneButton = view.findViewById(R.id.done_button);
 
         // Inisialisasi Firebase

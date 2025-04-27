@@ -43,7 +43,6 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0") // CardView untuk kartu profil
     implementation("com.github.bumptech.glide:glide:4.16.0") // Glide untuk memuat foto profil
     implementation("com.google.firebase:firebase-storage:20.3.0") // Firebase Storage untuk menyimpan foto
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

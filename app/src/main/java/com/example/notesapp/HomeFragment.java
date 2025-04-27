@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -47,10 +48,10 @@ public class HomeFragment extends Fragment {
 
     // Palet warna
     private final int[] cardColors = new int[] {
-            0xFF6A9C78, // Hijau sedikit lebih cerah
-            0xFF5A92C1, // Biru sedikit lebih cerah
-            0xFFD1A985, // Kuning sedikit lebih cerah
-            0xFFB5765A  // Oranye sedikit lebih cerah
+            0xFF6A9C78, // Hijau
+            0xFF5A92C1, // Biru
+            0xFFD1A985, // Kuning
+            0xFFB5765A  // Oranye
     };
 
     @Override
@@ -69,6 +70,11 @@ public class HomeFragment extends Fragment {
         // Inisialisasi Firebase
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() == null) {
+            Toast.makeText(getContext(), "Pengguna tidak terautentikasi", Toast.LENGTH_SHORT).show();
+            if (getActivity() != null) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().finish();
+            }
             return view;
         }
         String userId = mAuth.getCurrentUser().getUid();
@@ -107,14 +113,19 @@ public class HomeFragment extends Fragment {
                     Note note = dataSnapshot.getValue(Note.class);
                     if (note != null) {
                         note.setId(dataSnapshot.getKey());
-                        noteList.add(note);
+                        // Pastikan isPinned diinisialisasi
+                        if (note.getTimestamp() != 0) { // Bukan header
+                            noteList.add(note);
+                        }
                     }
                 }
                 filterNotes(searchView.getQuery().toString());
+                Log.d("HomeFragment", "Loaded " + noteList.size() + " notes");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Gagal memuat catatan: " + error.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("HomeFragment", "Error loading notes: " + error.getMessage());
             }
         });
@@ -134,7 +145,7 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        // Jika tidak ada catatan, langsung perbarui adapter dan keluar
+        // Jika tidak ada catatan, perbarui adapter
         if (filteredNoteList.isEmpty()) {
             noteAdapter.notifyDataSetChanged();
             return;
@@ -175,10 +186,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (notes.get(position).getTimestamp() == 0) {
-                return TYPE_HEADER;
-            }
-            return TYPE_ITEM;
+            return notes.get(position).getTimestamp() == 0 ? TYPE_HEADER : TYPE_ITEM;
         }
 
         @NonNull
@@ -239,14 +247,12 @@ public class HomeFragment extends Fragment {
         public SwipeToDeleteCallback() {
             super(0, ItemTouchHelper.LEFT);
             deleteIcon = ContextCompat.getDrawable(getContext(), android.R.drawable.ic_menu_delete);
-            deleteIcon.setTint(Color.WHITE); // Set ikon ke warna putih
+            deleteIcon.setTint(Color.WHITE);
 
-            // Membuat latar belakang kotak merah dengan sudut membulat
             background = new GradientDrawable();
-            background.setColor(Color.parseColor("#FF4444")); // Warna merah
-            background.setCornerRadii(new float[] {0, 0, 24, 24, 24, 24, 0, 0}); // Sudut membulat di sisi kanan
+            background.setColor(Color.parseColor("#FF4444"));
+            background.setCornerRadii(new float[] {0, 0, 24, 24, 24, 24, 0, 0});
 
-            // Lebar kotak hapus (dalam dp, konversi ke piksel)
             deleteButtonWidth = (int) (80 * getResources().getDisplayMetrics().density);
         }
 
@@ -259,22 +265,21 @@ public class HomeFragment extends Fragment {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             if (getItemViewType(position) != TYPE_ITEM) {
-                noteAdapter.notifyItemChanged(position); // Reset swipe untuk header
+                noteAdapter.notifyItemChanged(position);
                 return;
             }
 
             Note note = filteredNoteList.get(position);
             String noteId = note.getId();
 
-            // Hapus dari Firebase
             database.child(noteId).removeValue().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    // Hapus dari noteList (sumber utama)
                     noteList.removeIf(n -> n.getId().equals(noteId));
-                    // Perbarui filteredNoteList dengan memanggil filterNotes
                     filterNotes(searchView.getQuery().toString());
+                    Toast.makeText(getContext(), "Catatan dihapus", Toast.LENGTH_SHORT).show();
                 } else {
-                    noteAdapter.notifyItemChanged(position); // Reset swipe jika gagal
+                    noteAdapter.notifyItemChanged(position);
+                    Toast.makeText(getContext(), "Gagal menghapus: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -284,28 +289,24 @@ public class HomeFragment extends Fragment {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
             if (getItemViewType(viewHolder.getAdapterPosition()) != TYPE_ITEM) {
-                return; // Jangan gambar swipe untuk header
+                return;
             }
 
             View itemView = viewHolder.itemView;
 
-            // Hitung posisi ikon
             int iconMargin = (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
             int iconTop = itemView.getTop() + (itemView.getHeight() - deleteIcon.getIntrinsicHeight()) / 2;
             int iconBottom = iconTop + deleteIcon.getIntrinsicHeight();
 
-            if (dX < 0) { // Swipe ke kiri
-                // Posisi kotak hapus (lebar tetap, di sisi kanan)
+            if (dX < 0) {
                 int backgroundLeft = itemView.getRight() - deleteButtonWidth;
                 int backgroundRight = itemView.getRight();
                 background.setBounds(backgroundLeft, itemView.getTop(), backgroundRight, itemView.getBottom());
 
-                // Posisi ikon di tengah kotak hapus
                 int iconLeft = backgroundLeft + (deleteButtonWidth - deleteIcon.getIntrinsicWidth()) / 2;
                 int iconRight = iconLeft + deleteIcon.getIntrinsicWidth();
                 deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-                // Gambar latar belakang dan ikon
                 background.draw(c);
                 deleteIcon.draw(c);
             } else {
@@ -316,7 +317,7 @@ public class HomeFragment extends Fragment {
         @Override
         public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
             if (getItemViewType(viewHolder.getAdapterPosition()) == TYPE_HEADER) {
-                return 0; // Nonaktifkan swipe untuk header
+                return 0;
             }
             return super.getMovementFlags(recyclerView, viewHolder);
         }
