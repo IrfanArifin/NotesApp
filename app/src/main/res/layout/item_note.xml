@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/holo_blue_dark">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,24 +17,24 @@
         <!-- Judul -->
         <TextView
             android:id="@+id/title_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:maxLines="1"
+            android:textColor="#000000"
+            android:maxLines="2"
             android:ellipsize="end" />
 
         <!-- Isi -->
         <TextView
             android:id="@+id/content_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:textSize="14sp"
-            android:textColor="#E0E0E0"
+            android:textColor="#212121"
             android:maxLines="4"
-            android:ellipsize="end"
-            android:layout_marginTop="4dp" />
+            android:ellipsize="end" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
