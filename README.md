@@ -4,11 +4,11 @@ NotesApp adalah aplikasi Android sederhana untuk mencatat, dirancang dengan anta
 
 ## **Fitur Utama**
 
-Tambah Catatan: Buat catatan baru dengan judul dan isi melalui formulir yang mudah digunakan.
-Daftar Catatan: Lihat semua catatan dalam tampilan grid, dengan kategori "Pinned" dan "Notes", serta dukungan pencarian.
-Edit Catatan: Perbarui judul dan isi catatan dengan antarmuka Material Design.
-Hapus Catatan: Hapus catatan dengan gestur swipe-to-delete.
-Autentikasi: Login aman menggunakan Firebase Authentication untuk menyimpan catatan per pengguna.
+Tambah Catatan: Buat catatan baru dengan judul dan isi melalui formulir yang mudah digunakan. <br>
+Daftar Catatan: Lihat semua catatan dalam tampilan grid, dengan kategori "Pinned" dan "Notes", serta dukungan pencarian. <br>
+Edit Catatan: Perbarui judul dan isi catatan dengan antarmuka Material Design. <br>
+Hapus Catatan: Hapus catatan dengan gestur swipe-to-delete. <br>
+Autentikasi: Login aman menggunakan Firebase Authentication untuk menyimpan catatan per pengguna. <br>
 Tema Cerah: Desain modern dengan latar belakang #E3F2FD dan warna aksen #0288D1.
 
 ## **Teknologi**
