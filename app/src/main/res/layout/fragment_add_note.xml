@@ -1,50 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#121212">
 
-    <!-- Input Judul -->
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- Toolbar dengan tombol Done -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Judul Catatan"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:background="#121212">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/title_edit_text"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="12dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:background="#121212"
+            app:titleTextColor="#FFFFFF">
 
-    <!-- Input Isi -->
-    <com.google.android.material.textfield.TextInputLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah Catatan"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_gravity="start" />
+
+            <TextView
+                android:id="@+id/done_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Done"
+                android:textSize="16sp"
+                android:textColor="#FFCA28"
+                android:padding="8dp"
+                android:layout_gravity="end" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Form -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Isi Catatan"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="16dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Input Catatan (Judul dan Isi) -->
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/content_edit_text"
+            android:id="@+id/note_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
-            android:minLines="4"
-            android:padding="12dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Tombol Simpan -->
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Simpan Catatan"
-        android:backgroundTint="#6200EE"
-        android:textColor="#FFFFFF" />
+            android:minLines="1"
+            android:padding="12dp"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:background="@null"
+            android:hint="Mulai menulis catatan..."
+            app:hintTextColor="#757575" />
+    </LinearLayout>
 
 </LinearLayout>

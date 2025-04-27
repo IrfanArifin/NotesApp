@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Latar belakang lingkaran biru -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#007AFF" /> <!-- Biru iOS -->
+            <size
+                android:width="32dp"
+                android:height="32dp" />
+        </shape>
+    </item>
+    <!-- Ikon orang di tengah -->
+    <item
+        android:drawable="@android:drawable/ic_menu_myplaces"
+        android:width="20dp"
+        android:height="20dp"
+        android:gravity="center"
+        android:tint="#FFFFFF" /> <!-- Warna ikon putih -->
+</layer-list>

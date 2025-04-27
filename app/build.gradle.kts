@@ -37,8 +37,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database) // Firebase Realtime Database
+    implementation(libs.firebase.auth)     // Firebase Authentication
+    implementation("androidx.recyclerview:recyclerview:1.3.2") // RecyclerView
+    implementation("androidx.cardview:cardview:1.0.0") // CardView untuk kartu profil
+    implementation("com.github.bumptech.glide:glide:4.16.0") // Glide untuk memuat foto profil
+    implementation("com.google.firebase:firebase-storage:20.3.0") // Firebase Storage untuk menyimpan foto
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
